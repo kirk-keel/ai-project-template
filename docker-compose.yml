@@ -1,0 +1,31 @@
+services:
+  ollama:
+    image: ollama/ollama:latest
+    volumes:
+      - ollama-data:/root/.ollama
+    restart: unless-stopped
+    networks: [ai-net]
+
+  litellm:
+    image: ghcr.io/berriai/litellm:main-latest
+    command: ["--config", "/app/config/litellm.yaml", "--port", "4000"]
+    volumes:
+      - ./config:/app/config:ro
+    env_file: [.env]
+    restart: unless-stopped
+    networks: [ai-net]
+
+  app:
+    build: .
+    env_file: [.env]
+    ports:
+      - "127.0.0.1:8000:8000"
+    restart: unless-stopped
+    networks: [ai-net]
+
+volumes:
+  ollama-data:
+
+networks:
+  ai-net:
+    driver: bridge
