@@ -11,9 +11,13 @@ venv/
 node_modules/
 dist/
 .next/
+
+# Data (track the dirs, ignore the contents)
 data/raw/*
+!data/raw/.gitkeep
 data/processed/*
-!data/**/.gitkeep
+!data/processed/.gitkeep
+
 models/
 *.gguf
 *.safetensors

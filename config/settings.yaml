@@ -1,0 +1,8 @@
+# Non-secret application config
+app:
+  name: enterprise-ai-template
+  version: 0.1.0
+
+logging:
+  level: INFO
+  format: json
