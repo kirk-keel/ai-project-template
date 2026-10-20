@@ -1,5 +1,30 @@
 model_list:
+  # Tier 1: Fast Edge Model (high-frequency telemetry / low-latency classification)
+  - model_name: edge-fast
+    litellm_params:
+      model: ollama/qwen2.5:3b
+      api_base: http://ollama:11434
+      timeout: 30
+
+  # Tier 2: Local Primary Reasoning Model (SOP RAG evaluation & engineering analysis)
   - model_name: local
     litellm_params:
       model: ollama/llama3.1:latest
       api_base: http://ollama:11434
+      timeout: 90
+
+  # Tier 3: Cloud Fallback Model (invoked only if local inference is unavailable)
+  - model_name: cloud-fallback
+    litellm_params:
+      model: openai/gpt-4o-mini
+      api_key: os.environ/OPENAI_API_KEY
+      timeout: 60
+
+router_settings:
+  routing_strategy: simple-shuffle
+  num_retries: 2
+  timeout: 90
+  cooldown_time: 60
+  fallbacks:
+    - edge-fast: ["local", "cloud-fallback"]
+    - local: ["cloud-fallback"]

@@ -55,7 +55,7 @@ flowchart LR
 ## Quick start
 
 ```bash
-git clone git@gh-public:kirk-keel/ai-project-template.git
+git clone https://github.com/kirk-keel/ai-project-template.git
 cd ai-project-template
 cp .env.example .env
 make setup
